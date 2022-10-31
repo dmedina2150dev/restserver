@@ -1,12 +1,12 @@
 
 // {
-//     name: 'asas',
-//     email: 'gjvhbksna@na',
-//     password: 'jhbsdd',
-//     img: 'jahbjnk',
-//     role: 'jhbkjnkalmñl',
-//     status: false,
-//     google: true / false si fue creado por google
+//     "name": 'asas',
+//     "email": 'gjvhbksna@na',
+//     "password": 'jhbsdd',
+//     "img": 'jahbjnk',
+//     "role": 'jhbkjnkalmñl',
+//     "status": false,
+//     "google": true / false si fue creado por google
 // }
 
 const { Schema, model } = require('mongoose');
