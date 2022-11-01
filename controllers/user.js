@@ -33,15 +33,6 @@ const createUser = async ( req, res = response ) => {
 
     const user = new User( { name, email, password, role } );
 
-    // TODO Verificar que el email existe
-    const existEmail = await User.findOne({ email });
-
-    if( existEmail ) {
-        return res.status(400).json({
-            msg: 'El correo ya esta registrado!'
-        });
-    }
-
     // TODO encrypta la contraseña
     const salt = bcrypt.genSaltSync();
     user.password = bcrypt.hashSync( password, salt );
