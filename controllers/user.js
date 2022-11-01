@@ -18,12 +18,24 @@ const getInfoUser = ( req = request, res = response ) => {
     });
 }
 
-const updateUser = ( req, res = response ) => {
+const updateUser = async ( req, res = response ) => {
     const id = req.params.id;
-    
+    const { _id, password, google, ...resto } = req.body;
+
+    // TODO Validar contra base de datos
+    if( password ) {
+        // TODO encrypta la contraseña
+        const salt = bcrypt.genSaltSync();
+        resto.password = bcrypt.hashSync( password, salt );
+    }
+
+    const user = await User.findByIdAndUpdate(id, resto)
+
     res.status(400).json({
         "msg": 'update API -- Controller',
-        params: id
+        params: id,
+        user
+
     });
 }
 
