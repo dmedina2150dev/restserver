@@ -44,4 +44,13 @@ const UserSchema = Schema({
     }
 });
 
+// TODO Se pueden crear metodos que permitan sobreescribir los existentes de mongoose
+
+UserSchema.methods.toJSON = function() {
+    // Desestructuramos el objeto del schema para sacarle datos al objeto que regresamos a la peticion
+    const { __v, password, ...user } = this.toObject(); 
+
+    return user;
+}
+
 module.exports = model( 'User', UserSchema );// TODO EL nombre del model Debe ir con mayuscula y en singular
