@@ -7,14 +7,25 @@ const User = require('../models/user');
 const getInfoUsers = async ( req = request, res = response ) => {
     
     const { limit = 5, page = 0 } = req.query;
+    const query = { status: true };
+    // TODO Se le coloca la condicion al find() -> para sacar los usuarios que sean eliminados
+    // const users = await User.find({ status: true })
+    // .skip( page )
+    // .limit( limit );
+    
+    // const total = await User.countDocuments({ status: true });
 
-    const total = await User.countDocuments(); 
+    const [ total, users ] = await Promise.all([
+        User.countDocuments(query),
+        User.find(query)
+            .skip( page )
+            .limit( limit )
+    ]);
 
-    const users = await User.find()
-        .skip( page )
-        .limit( limit );
-
-    res.json({ total, users });
+    res.json({ 
+        total,
+        users
+    });
 }
 
 const updateUser = async ( req, res = response ) => {
@@ -46,10 +57,7 @@ const createUser = async ( req, res = response ) => {
     // TODO Guardar la base de dato
     await user.save();
 
-    res.status(201).json({
-        "msg": 'post API -- Controller',
-        user 
-    });
+    res.status(201).json({ user });
 }
 
 const deleteUser = ( req, res = response ) => {
