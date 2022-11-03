@@ -7,11 +7,14 @@ const User = require('../models/user');
 const getInfoUsers = async ( req = request, res = response ) => {
     
     const { limit = 5, page = 0 } = req.query;
+
+    const total = await User.countDocuments(); 
+
     const users = await User.find()
         .skip( page )
         .limit( limit );
 
-    res.json({ users });
+    res.json({ total, users });
 }
 
 const updateUser = async ( req, res = response ) => {
