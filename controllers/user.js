@@ -4,18 +4,14 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/user');
 
 
-const getInfoUser = ( req = request, res = response ) => {
-
-    const { q, nombre, apikey, limit, page = 1 } = req.query;
+const getInfoUsers = async ( req = request, res = response ) => {
     
-    res.json({
-        "msg": 'get API -- Controller',
-        q,
-        nombre,
-        apikey,
-        limit,
-        page
-    });
+    const { limit = 5, page = 0 } = req.query;
+    const users = await User.find()
+        .skip( page )
+        .limit( limit );
+
+    res.json({ users });
 }
 
 const updateUser = async ( req, res = response ) => {
@@ -31,12 +27,7 @@ const updateUser = async ( req, res = response ) => {
 
     const user = await User.findByIdAndUpdate(id, resto)
 
-    res.status(400).json({
-        "msg": 'update API -- Controller',
-        params: id,
-        user
-
-    });
+    res.status(400).json( user );
 }
 
 const createUser = async ( req, res = response ) => {
@@ -71,7 +62,7 @@ const updateCreateUser = ( req, res = response ) => {
 }
 
 module.exports =  {
-    getInfoUser,
+    getInfoUsers,
     updateUser,
     createUser,
     deleteUser,
