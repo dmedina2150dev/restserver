@@ -60,9 +60,17 @@ const createUser = async ( req, res = response ) => {
     res.status(201).json({ user });
 }
 
-const deleteUser = ( req, res = response ) => {
+const deleteUser = async ( req, res = response ) => {
+
+    const { id } = req.params;
+
+    // TODO Eliminar de Forma Fisica
+    // const user = await User.findByIdAndDelete( id ); // No es bueno que se elimine porque pierdes la referencia de las demas acciones en la base de datos
+
+    const user = await User.findByIdAndUpdate(id, { status: false });
+
     res.json({
-        "msg": 'delete API -- Controller'
+        user
     });
 }
 

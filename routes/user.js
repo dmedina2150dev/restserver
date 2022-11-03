@@ -28,7 +28,11 @@ router.post( '/', [
     validateItems
 ] ,createUser );
 
-router.delete( '/', deleteUser );
+router.delete( '/:id', [
+    check('id', 'No es un ID Valido').isMongoId(),
+    check('id').custom( existUserById ),
+    validateItems
+], deleteUser );
 
 router.patch('/', updateCreateUser );
 
