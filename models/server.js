@@ -1,48 +1,41 @@
 const express = require('express');
 const cors = require('cors');
 
-const { dbConnection } = require('../database/config');
-
-
 class Server {
 
     constructor() {
+        // Cuando se instancie el servidor se creara la aplicación de express
         this.app = express();
-        this.port = process.env.PORT;
-        this.usersPath = '/api/users';
 
-        // TODO Conectar a base de datos
-        this.connectDB();
-        
-        // TODO Middlewares
+        // Instanciamos el puerto de las variables de entorno
+        this.port = process.env.PORT || 3000;
+
+        // Dejamos visible en una variable el path de las rutas de usuarios
+        this.userRouterPath = '/api/users';
+
+        // * Aqui iran los Middlewares
         this.middlewares();
 
-        // TODO Rutas de mi aplicación 
+        // Llamamos al metodo para crear las rutas
         this.routes();
     }
 
-    async connectDB() {
-        await dbConnection();
-    }
 
     middlewares() {
         // Cors
         this.app.use( cors() );
 
-        // Lectura y parseo del body
-        this.app.use( express.json() );
+        this.app.use( express.static('public') );// Directory publico
 
-        // Directorio publico
-        this.app.use( express.static('public') );
     }
 
     routes() {
-        this.app.use( this.usersPath, require('../routes/user') );
+        this.app.use(this.userRouterPath, require('../routes/user.routes'));
     }
 
     listen() {
-        this.app.listen( this.port, () => {
-            console.log('Servidor corriendo.. ' + this.port );
+        this.app.listen(this.port, () => {
+            console.log(`Example app listening on port ${this.port}`)
         });
     }
 
